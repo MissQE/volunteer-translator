@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Volunteer Language Translator</title>
+
+  <!-- This line makes it mobile-friendly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    textarea, select, button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #666;
+      margin-top: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Volunteer Language Translator</h2>
+
+  <!-- Preset phrases -->
+  <select onchange="fillPhrase(this.value)">
+    <option value="">Select a common phrase</option>
+    <option value="Can I help you?">Can I help you?</option>
+    <option value="Where is the stadium?">Where is the stadium?</option>
+    <option value="Please follow me.">Please follow me.</option>
+    <option value="The emergency exit is this way.">The emergency exit is this way.</option>
+    <option value="Please wait here.">Please wait here.</option>
+  </select>
+
+  <textarea id="inputText" placeholder="Type text in English..."></textarea>
+
+  <select id="language">
+    <option value="tr">Turkish</option>
+    <option value="fr">French</option>
+  </select>
+
+  <button onclick="translateText()">Translate</button>
+
+  <textarea id="outputText" placeholder="Translation appears here..." readonly></textarea>
+
+  <div class="hint">
+    Designed for volunteers • Works on mobile
+  </div>
+</div>
+
+<script>
+function fillPhrase(text) {
+  if (text) {
+    document.getElementById("inputText").value = text;
+  }
+}
+
+async function translateText() {
+  const text = document.getElementById("inputText").value;
+  const target = document.getElementById("language").value;
+
+  if (!text) {
+    alert("Please enter text");
+    return;
+  }
+
+  document.getElementById("outputText").value = "Translating...";
+
+  try {
+    const response = await fetch(
+      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${target}`
+    );
+
+    const data = await response.json();
+    document.getElementById("outputText").value =
+      data.responseData.translatedText;
+
+  } catch (error) {
+    document.getElementById("outputText").value =
+      "Unable to translate right now.";
+  }
+}
+</script>
+
+</body>
+</html>
