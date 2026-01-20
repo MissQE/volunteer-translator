@@ -168,8 +168,13 @@ function startVoice() {
   recognition.interimResults = false;
 
   recognition.onresult = function(event) {
-    document.getElementById("inputText").value =
-      event.results[0][0].transcript;
+  document.getElementById("inputText").value =
+    event.results[0][0].transcript;
+
+  // Auto-translate after speaking
+  setTimeout(translateText, 300);
+};
+
   };
 
   recognition.start();
@@ -178,3 +183,4 @@ function startVoice() {
 
 </body>
 </html>
+
