@@ -164,27 +164,36 @@ async function translateText() {
   }
 
   const recognition = new webkitSpeechRecognition();
-  recognition.lang = document.getElementById("fromLang").value;
-  recognition.continuous = false;
+
+  const fromLang = document.getElementById("fromLang").value;
+
+  // Map to proper speech-recognition language codes
+  if (fromLang === "en") recognition.lang = "en-US";
+  if (fromLang === "tr") recognition.lang = "tr-TR";
+  if (fromLang === "fr") recognition.lang = "fr-FR";
+
   recognition.interimResults = false;
+  recognition.continuous = false;
 
   recognition.onstart = function () {
     console.log("Voice recognition started");
   };
 
-  recognition.onresult = function (event) {
-    document.getElementById("inputText").value =
-      event.results[0][0].transcript;
+  recognition.onresult = function(event) {
+    const spokenText = event.results[0][0].transcript;
+    document.getElementById("inputText").value = spokenText;
 
+    // Auto-translate after speech
     setTimeout(translateText, 300);
   };
 
-  recognition.onerror = function (event) {
-    alert("Voice error: " + event.error);
+  recognition.onerror = function(event) {
+    alert("Microphone error: " + event.error);
   };
 
   recognition.start();
 }
+
   
   if (!('webkitSpeechRecognition' in window)) {
     alert("Voice input not supported in this browser.");
@@ -211,5 +220,6 @@ async function translateText() {
 
 </body>
 </html>
+
 
 
