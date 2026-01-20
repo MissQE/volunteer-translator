@@ -1,0 +1,16 @@
+{
+  "name": "Volunteer Emergency Translator",
+  "short_name": "Translator",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a3d91",
+  "theme_color": "#0a3d91",
+  "description": "Emergency language translation tool for international volunteers",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
